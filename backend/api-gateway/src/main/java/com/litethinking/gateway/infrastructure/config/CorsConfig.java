@@ -14,9 +14,15 @@ public class CorsConfig {
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:9000"));
+        config.setAllowedOrigins(List.of(
+                "http://localhost:9000",
+                "https://litethinking.nvvdev.com"
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-User-Id", "X-Username", "X-User-Role"));
+        config.setAllowedHeaders(List.of(
+                "Authorization", "Content-Type",
+                "X-User-Id", "X-Username", "X-User-Role"
+        ));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
 
