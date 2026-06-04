@@ -120,13 +120,13 @@ services:
       - api-gateway
 
   cloudflare-tunnel:
-  image: cloudflare/cloudflared:latest
-  container_name: litethinking-tunnel
-  restart: unless-stopped
-  command: tunnel --no-autoupdate run --token eyJhIjoiNDY4NzE0OGZkYjFmODc5NTg5YTI5MmY1YTNiN2U1ZDgiLCJ0IjoiMGMwZjViZWItZjlkNy00YzYxLWI5MzctZmE1MDI5MWNhYTk3IiwicyI6Ik5HRTNaR1ppTlRNdE56VmhOQzAwTjJZeExXSTBOREF0T0RVeU9XWXdOR1kxTlRoaSJ9
-  depends_on:
-    - frontend
-    - api-gateway
+    image: cloudflare/cloudflared:latest
+    container_name: litethinking-tunnel
+    restart: unless-stopped
+    command: [ "tunnel", "--no-autoupdate", "run", "--token", "eyJhIjoiNDY4NzE0OGZkYjFmODc5NTg5YTI5MmY1YTNiN2U1ZDgiLCJ0IjoiMGMwZjViZWItZjlkNy00YzYxLWI5MzctZmE1MDI5MWNhYTk3IiwicyI6Ik5HRTNaR1ppTlRNdE56VmhOQzAwTjJZeExXSTBOREF0T0RVeU9XWXdOR1kxTlRoaSJ9" ]
+    depends_on:
+      - frontend
+      - api-gateway
 
 volumes:
   postgres_data:
