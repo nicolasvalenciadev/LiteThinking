@@ -16,6 +16,8 @@ import java.util.UUID;
 @RequestMapping("/api/products")
 public class ProductController {
 
+    private static final String ROLE_ADMIN = "ADMIN";
+
     private final ProductUseCase productUseCase;
 
     public ProductController(ProductUseCase productUseCase) {
@@ -69,7 +71,7 @@ public class ProductController {
     }
 
     private void requireAdmin(String userRole) {
-        if (!"ADMIN".equalsIgnoreCase(userRole)) {
+        if (!ROLE_ADMIN.equalsIgnoreCase(userRole)) {
             throw new ForbiddenException();
         }
     }

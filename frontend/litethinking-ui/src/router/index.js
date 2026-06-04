@@ -1,9 +1,15 @@
 import { route } from 'quasar/wrappers'
-import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
+import {
+  createRouter,
+  createMemoryHistory,
+  createWebHistory,
+  createWebHashHistory
+} from 'vue-router'
 import routes from './routes.js'
 import { useAuthStore } from '../stores/auth.store.js'
+import { ROLES } from '../constants/index.js'
 
-export default route(function (/* { store, ssrContext } */) {
+export default route(function () {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory)
@@ -14,22 +20,30 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
-  // Navigation Guard
   Router.beforeEach((to, from, next) => {
     const authStore = useAuthStore()
-
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+    const requiredRole = to.meta.requiredRole
 
     if (requiresAuth && !authStore.isAuthenticated) {
-      // User is not authenticated, redirect to login
-      next('/login')
-    } else if (to.path === '/login' && authStore.isAuthenticated) {
-      // User is already authenticated, redirect to dashboard/companies
-      next('/companies')
-    } else {
-      // Proceed
-      next()
+      return next('/login')
     }
+
+    if (to.path === '/login' && authStore.isAuthenticated) {
+      return next('/companies')
+    }
+
+    if (requiredRole === ROLES.ADMIN && authStore.isExternal) {
+      return next('/companies')
+    }
+
+    next()
+  })
+
+  Router.afterEach((to) => {
+    document.title = to.meta.title
+      ? `${to.meta.title} — LiteThinking`
+      : 'LiteThinking — Gestión Empresarial'
   })
 
   return Router

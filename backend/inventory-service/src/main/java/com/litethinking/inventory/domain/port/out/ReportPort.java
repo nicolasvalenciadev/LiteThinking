@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ReportPort {
 
-    byte[] generatePdf(List<InventoryItem> items);
+    byte[] generateInventoryPdf(List<InventoryItem> items);
 }

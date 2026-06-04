@@ -17,7 +17,7 @@ services:
       - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql
       - ./database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U litethinking_user -d litethinking_db"]
+      test: [ "CMD-SHELL", "pg_isready -U litethinking_user -d litethinking_db" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -122,3 +122,12 @@ services:
 volumes:
   postgres_data:
     driver: local
+
+cloudflare-tunnel:
+  image: cloudflare/cloudflared:latest
+  container_name: litethinking-tunnel
+  restart: unless-stopped
+  command: tunnel --no-autoupdate run --token eyJhIjoiNDY4NzE0OGZkYjFmODc5NTg5YTI5MmY1YTNiN2U1ZDgiLCJ0IjoiMGMwZjViZWItZjlkNy00YzYxLWI5MzctZmE1MDI5MWNhYTk3IiwicyI6Ik5HRTNaR1ppTlRNdE56VmhOQzAwTjJZeExXSTBOREF0T0RVeU9XWXdOR1kxTlRoaSJ9
+  depends_on:
+    - frontend
+    - api-gateway

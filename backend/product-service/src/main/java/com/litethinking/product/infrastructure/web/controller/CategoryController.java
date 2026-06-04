@@ -16,6 +16,8 @@ import java.util.UUID;
 @RequestMapping("/api/categories")
 public class CategoryController {
 
+    private static final String ROLE_ADMIN = "ADMIN";
+
     private final CategoryUseCase categoryUseCase;
 
     public CategoryController(CategoryUseCase categoryUseCase) {
@@ -62,7 +64,7 @@ public class CategoryController {
     }
 
     private void requireAdmin(String userRole) {
-        if (!"ADMIN".equalsIgnoreCase(userRole)) {
+        if (!ROLE_ADMIN.equalsIgnoreCase(userRole)) {
             throw new ForbiddenException();
         }
     }

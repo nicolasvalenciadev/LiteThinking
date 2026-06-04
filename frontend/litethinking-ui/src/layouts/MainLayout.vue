@@ -7,7 +7,7 @@
           dense
           round
           icon="menu"
-          aria-label="Menu"
+          aria-label="Abrir menú"
           @click="toggleLeftDrawer"
         />
 
@@ -21,9 +21,9 @@
             <span class="text-subtitle2" style="line-height: 1;">{{ authStore.username }}</span>
           </div>
 
-          <q-badge :color="isAdmin ? 'deep-orange' : 'teal'" class="text-weight-bold q-py-xs q-px-sm">
+          <app-badge :color="isAdmin ? 'deep-orange' : 'teal'">
             {{ isAdmin ? 'ADMINISTRADOR' : 'EXTERNO' }}
-          </q-badge>
+          </app-badge>
 
           <q-btn
             flat
@@ -31,6 +31,7 @@
             dense
             icon="logout"
             class="q-ml-md"
+            aria-label="Cerrar sesión"
             @click="handleLogout"
           >
             <q-tooltip>Cerrar Sesión</q-tooltip>
@@ -39,71 +40,12 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      class="bg-grey-1"
-    >
-      <q-list>
-        <q-item-label
-          header
-          class="text-weight-bold text-uppercase text-grey-7 q-pt-md"
-        >
-          Menú de Navegación
-        </q-item-label>
-
-        <q-item
-          clickable
-          v-ripple
-          to="/companies"
-          active-class="bg-blue-1 text-primary text-weight-bold"
-        >
-          <q-item-section avatar>
-            <q-icon name="corporate_fare" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Empresas</q-item-label>
-            <q-item-label caption>Gestión de empresas</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item
-          clickable
-          v-ripple
-          to="/products"
-          active-class="bg-blue-1 text-primary text-weight-bold"
-        >
-          <q-item-section avatar>
-            <q-icon name="inventory_2" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Productos</q-item-label>
-            <q-item-label caption>Catálogo de artículos</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item
-          clickable
-          v-ripple
-          to="/inventory"
-          active-class="bg-blue-1 text-primary text-weight-bold"
-        >
-          <q-item-section avatar>
-            <q-icon name="assessment" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Inventario</q-item-label>
-            <q-item-label caption>Reportes y Exportaciones</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-drawer>
+    <app-sidebar v-model="leftDrawerOpen" />
 
     <q-page-container>
-      <q-page class="q-pa-md bg-grey-2">
+      <main role="main">
         <router-view />
-      </q-page>
+      </main>
     </q-page-container>
   </q-layout>
 </template>
@@ -111,15 +53,16 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth.store.js'
 import { useQuasar } from 'quasar'
+import { useAuthStore } from '../stores/auth.store.js'
+import AppSidebar from '../components/organisms/AppSidebar.vue'
+import AppBadge from '../components/atoms/AppBadge.vue'
 
 const $q = useQuasar()
 const router = useRouter()
 const authStore = useAuthStore()
 
 const leftDrawerOpen = ref(false)
-
 const isAdmin = computed(() => authStore.isAdmin)
 
 function toggleLeftDrawer() {
@@ -130,30 +73,13 @@ function handleLogout() {
   $q.dialog({
     title: 'Cerrar Sesión',
     message: '¿Está seguro de que desea salir del sistema?',
-    cancel: {
-      label: 'Cancelar',
-      color: 'grey-7',
-      flat: true
-    },
-    ok: {
-      label: 'Salir',
-      color: 'primary',
-      flat: true
-    },
+    cancel: { label: 'Cancelar', color: 'grey-7', flat: true },
+    ok: { label: 'Salir', color: 'primary', flat: true },
     persistent: true
   }).onOk(() => {
     authStore.clearAuth()
-    $q.notify({
-      type: 'info',
-      message: 'Sesión cerrada correctamente'
-    })
+    $q.notify({ type: 'info', message: 'Sesión cerrada correctamente' })
     router.push('/login')
   })
 }
 </script>
-
-<style scoped>
-.q-drawer {
-  background-color: #fafafa;
-}
-</style>

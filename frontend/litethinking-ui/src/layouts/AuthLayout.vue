@@ -1,13 +1,14 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="auth-layout">
     <q-page-container class="window-height window-width row justify-center items-center">
-      <router-view />
+      <main role="main">
+        <router-view />
+      </main>
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup>
-// Auth layout host page
 </script>
 
 <style scoped>

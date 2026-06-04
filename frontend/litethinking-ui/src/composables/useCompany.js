@@ -1,6 +1,8 @@
 import { ref, computed } from 'vue'
+import { Notify } from 'quasar'
 import { api } from '../boot/axios.js'
 import { useCompanyStore } from '../stores/company.store.js'
+import { API } from '../constants/index.js'
 
 export function useCompany() {
   const companyStore = useCompanyStore()
@@ -10,14 +12,24 @@ export function useCompany() {
   const companies = computed(() => companyStore.companies)
   const selectedCompany = computed(() => companyStore.selectedCompany)
 
+  function resolveError(err) {
+    if (!err.response) return 'Sin conexión al servidor'
+    if (err.response.status === 403) return 'No tiene permisos para realizar esta acción'
+    if (err.response.status === 404) return 'El recurso solicitado no fue encontrado'
+    if (err.response.status >= 500) return 'Error interno del servidor. Intente nuevamente'
+    if (err.response.data?.message) return err.response.data.message
+    return 'Ha ocurrido un error inesperado'
+  }
+
   const fetchCompanies = async () => {
     loading.value = true
     error.value = null
     try {
-      const { data } = await api.get('/api/companies')
+      const { data } = await api.get(API.COMPANIES)
       companyStore.setCompanies(data)
     } catch (err) {
-      error.value = 'Error al cargar la lista de empresas'
+      error.value = resolveError(err)
+      Notify.create({ type: 'negative', message: error.value })
     } finally {
       loading.value = false
     }
@@ -27,11 +39,12 @@ export function useCompany() {
     loading.value = true
     error.value = null
     try {
-      const { data } = await api.get(`/api/companies/${id}`)
+      const { data } = await api.get(`${API.COMPANIES}/${id}`)
       companyStore.setSelectedCompany(data)
       return data
     } catch (err) {
-      error.value = 'Error al obtener los detalles de la empresa'
+      error.value = resolveError(err)
+      Notify.create({ type: 'negative', message: error.value })
     } finally {
       loading.value = false
     }
@@ -41,15 +54,12 @@ export function useCompany() {
     loading.value = true
     error.value = null
     try {
-      const { data } = await api.post('/api/companies', companyData)
+      const { data } = await api.post(API.COMPANIES, companyData)
       await fetchCompanies()
       return data
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.message) {
-        error.value = err.response.data.message
-      } else {
-        error.value = 'Error al crear la empresa. Verifique que el NIT sea único'
-      }
+      error.value = resolveError(err)
+      Notify.create({ type: 'negative', message: error.value })
       throw err
     } finally {
       loading.value = false
@@ -60,15 +70,12 @@ export function useCompany() {
     loading.value = true
     error.value = null
     try {
-      const { data } = await api.put(`/api/companies/${id}`, companyData)
+      const { data } = await api.put(`${API.COMPANIES}/${id}`, companyData)
       await fetchCompanies()
       return data
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.message) {
-        error.value = err.response.data.message
-      } else {
-        error.value = 'Error al actualizar la empresa'
-      }
+      error.value = resolveError(err)
+      Notify.create({ type: 'negative', message: error.value })
       throw err
     } finally {
       loading.value = false
@@ -79,11 +86,12 @@ export function useCompany() {
     loading.value = true
     error.value = null
     try {
-      await api.delete(`/api/companies/${id}`)
+      await api.delete(`${API.COMPANIES}/${id}`)
       await fetchCompanies()
       return true
     } catch (err) {
-      error.value = 'Error al eliminar la empresa'
+      error.value = resolveError(err)
+      Notify.create({ type: 'negative', message: error.value })
       throw err
     } finally {
       loading.value = false

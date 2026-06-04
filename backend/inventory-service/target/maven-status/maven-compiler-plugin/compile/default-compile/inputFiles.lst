@@ -2,6 +2,7 @@
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/application/service/InventoryService.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/domain/exception/EmailDeliveryException.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/domain/exception/ForbiddenException.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/domain/exception/InventoryQueryException.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/domain/exception/ReportGenerationException.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/domain/model/CompanyInfo.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/domain/model/InventoryItem.java

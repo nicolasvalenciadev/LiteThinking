@@ -16,6 +16,9 @@ import java.util.Date;
 @Component
 public class JwtUtils implements TokenPort {
 
+    private static final String CLAIM_USER_ID = "userId";
+    private static final String CLAIM_ROLE = "role";
+
     private final SecretKey signingKey;
     private final long expirationMs;
 
@@ -31,28 +34,30 @@ public class JwtUtils implements TokenPort {
     }
 
     public String buildToken(User user) {
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + expirationMs);
         return Jwts.builder()
                 .subject(user.getUsername())
-                .claim("userId", user.getId().toString())
-                .claim("role", user.getRole().getName())
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expirationMs))
+                .claim(CLAIM_USER_ID, user.getId().toString())
+                .claim(CLAIM_ROLE, user.getRole().getName())
+                .issuedAt(now)
+                .expiration(expiration)
                 .signWith(signingKey)
                 .compact();
     }
 
     @Override
     public boolean isValid(String token) {
-        return validateToken(token);
-    }
-
-    public boolean validateToken(String token) {
         try {
             extractClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public boolean validateToken(String token) {
+        return isValid(token);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.litethinking.auth.infrastructure.persistence.entity.UserEntity;
 import com.litethinking.auth.infrastructure.persistence.repository.RoleJpaRepository;
 import com.litethinking.auth.infrastructure.persistence.repository.UserJpaRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -33,6 +34,7 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
+    @Transactional
     public User save(User user) {
         RoleEntity roleEntity = roleJpaRepository.findById(user.getRole().getId())
                 .orElseThrow(() -> new IllegalArgumentException(

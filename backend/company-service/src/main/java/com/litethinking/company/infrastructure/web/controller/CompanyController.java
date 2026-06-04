@@ -28,6 +28,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CompanyController {
 
+    private static final String ADMIN_ROLE = "ADMIN";
+
     private final CompanyUseCase companyUseCase;
     private final CompanyMapper companyMapper;
 
@@ -52,7 +54,7 @@ public class CompanyController {
     public ResponseEntity<CompanyResponseDTO> create(
             @RequestHeader("X-User-Role") String userRole,
             @Valid @RequestBody CompanyRequestDTO request) {
-        enforceAdminRole(userRole);
+        requireAdminRole(userRole);
         Company company = companyUseCase.create(companyMapper.toDomain(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(companyMapper.toResponseDTO(company));
     }
@@ -62,7 +64,7 @@ public class CompanyController {
             @PathVariable UUID id,
             @RequestHeader("X-User-Role") String userRole,
             @Valid @RequestBody CompanyRequestDTO request) {
-        enforceAdminRole(userRole);
+        requireAdminRole(userRole);
         Company company = companyUseCase.update(id, companyMapper.toDomain(request));
         return ResponseEntity.ok(companyMapper.toResponseDTO(company));
     }
@@ -71,13 +73,13 @@ public class CompanyController {
     public ResponseEntity<Void> delete(
             @PathVariable UUID id,
             @RequestHeader("X-User-Role") String userRole) {
-        enforceAdminRole(userRole);
+        requireAdminRole(userRole);
         companyUseCase.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    private void enforceAdminRole(String userRole) {
-        if (!"ADMIN".equals(userRole)) {
+    private void requireAdminRole(String userRole) {
+        if (!ADMIN_ROLE.equals(userRole)) {
             throw new ForbiddenException(
                     "Acceso denegado: se requiere el rol ADMIN para realizar esta operación");
         }

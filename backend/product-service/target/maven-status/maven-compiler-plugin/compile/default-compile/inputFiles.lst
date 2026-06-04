@@ -5,6 +5,7 @@
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/product-service/src/main/java/com/litethinking/product/domain/exception/ForbiddenException.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/product-service/src/main/java/com/litethinking/product/domain/exception/ProductAlreadyExistsException.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/product-service/src/main/java/com/litethinking/product/domain/exception/ProductNotFoundException.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/product-service/src/main/java/com/litethinking/product/domain/exception/ProductPersistenceException.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/product-service/src/main/java/com/litethinking/product/domain/model/Category.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/product-service/src/main/java/com/litethinking/product/domain/model/Product.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/product-service/src/main/java/com/litethinking/product/domain/model/ProductPrice.java

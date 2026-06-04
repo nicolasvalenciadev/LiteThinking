@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@Transactional
 public class CompanyService implements CompanyUseCase {
 
     private final CompanyRepositoryPort repositoryPort;
@@ -36,6 +35,7 @@ public class CompanyService implements CompanyUseCase {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Company create(Company company) {
         if (repositoryPort.existsByNit(company.getNit())) {
             throw new CompanyAlreadyExistsException(
@@ -45,6 +45,7 @@ public class CompanyService implements CompanyUseCase {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Company update(UUID id, Company updates) {
         Company existing = repositoryPort.findById(id)
                 .orElseThrow(() -> new CompanyNotFoundException(
@@ -64,6 +65,7 @@ public class CompanyService implements CompanyUseCase {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(UUID id) {
         Company company = repositoryPort.findById(id)
                 .orElseThrow(() -> new CompanyNotFoundException(

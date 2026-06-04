@@ -8,7 +8,7 @@ public interface InventoryUseCase {
 
     List<InventoryItem> getInventory();
 
-    byte[] generatePdf();
+    byte[] generateInventoryPdf();
 
     void sendPdfByEmail(String email);
 }

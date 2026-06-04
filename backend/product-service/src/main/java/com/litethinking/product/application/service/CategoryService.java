@@ -25,6 +25,7 @@ public class CategoryService implements CategoryUseCase {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryResponseDTO> findAll() {
         return categoryRepositoryPort.findAll().stream()
                 .map(categoryMapper::toResponseDTO)
@@ -32,6 +33,7 @@ public class CategoryService implements CategoryUseCase {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryResponseDTO findById(UUID id) {
         Category category = categoryRepositoryPort.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));
@@ -39,7 +41,7 @@ public class CategoryService implements CategoryUseCase {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public CategoryResponseDTO create(CategoryRequestDTO request) {
         Category category = new Category();
         category.setName(request.getName());
@@ -48,7 +50,7 @@ public class CategoryService implements CategoryUseCase {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public CategoryResponseDTO update(UUID id, CategoryRequestDTO request) {
         Category category = categoryRepositoryPort.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));
@@ -58,7 +60,7 @@ public class CategoryService implements CategoryUseCase {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void delete(UUID id) {
         categoryRepositoryPort.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));

@@ -2,6 +2,7 @@ package com.litethinking.inventory.infrastructure.web.exception;
 
 import com.litethinking.inventory.domain.exception.EmailDeliveryException;
 import com.litethinking.inventory.domain.exception.ForbiddenException;
+import com.litethinking.inventory.domain.exception.InventoryQueryException;
 import com.litethinking.inventory.domain.exception.ReportGenerationException;
 import com.litethinking.inventory.infrastructure.web.dto.ErrorResponseDTO;
 import org.slf4j.Logger;
@@ -41,6 +42,13 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponseDTO(403, ex.getMessage()));
     }
 
+    @ExceptionHandler(InventoryQueryException.class)
+    public ResponseEntity<ErrorResponseDTO> handleInventoryQueryException(InventoryQueryException ex) {
+        log.error("InventoryQueryException: {}", ex.getMessage(), ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponseDTO(500, ex.getMessage()));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDTO> handleValidationException(MethodArgumentNotValidException ex) {
         List<ErrorResponseDTO.FieldErrorDTO> fieldErrors = ex.getBindingResult()
@@ -56,7 +64,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception ex) {
-        log.error("Unhandled exception: {} - {}", ex.getClass().getName(), ex.getMessage(), ex);
+        log.error("Unhandled [{}]: {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponseDTO(500,
                         "Ha ocurrido un error interno en el servidor. Por favor, intente más tarde."));

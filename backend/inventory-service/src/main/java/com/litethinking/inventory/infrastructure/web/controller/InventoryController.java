@@ -48,7 +48,7 @@ public class InventoryController {
     public ResponseEntity<byte[]> generateAndDownloadPdf(
             @RequestHeader(value = ROLE_HEADER, required = false) String role) {
         requireAdmin(role);
-        byte[] pdf = inventoryUseCase.generatePdf();
+        byte[] pdf = inventoryUseCase.generateInventoryPdf();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

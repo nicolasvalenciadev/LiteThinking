@@ -29,7 +29,7 @@ INSERT INTO users (id, username, password, role_id, client_id, created_date, las
     (
         'c3d4e5f6-0003-0003-0003-000000000001',
         'admin',
-        '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy',
+        '$2b$10$WdbJ17DaivS8QNRVDhsJEeKieSjGlAy0fTU028eh2rdq4VAOdkbh.',
         'a1b2c3d4-0001-0001-0001-000000000001',
         NULL,
         NOW(), NOW(), FALSE
@@ -37,7 +37,7 @@ INSERT INTO users (id, username, password, role_id, client_id, created_date, las
     (
         'c3d4e5f6-0003-0003-0003-000000000002',
         'external',
-        '$2a$10$TbOCe1bqWEMFW3oNgPqgNeKSVAAvCMxbkEqST9x5KRFb.L6pFGwXa',
+        '$2b$10$z1lLCNOwyT7vXlKzF240qOFe8OHB1jSumxedWbYD008wYpYB3niba',
         'a1b2c3d4-0001-0001-0001-000000000002',
         NULL,
         NOW(), NOW(), FALSE

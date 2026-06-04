@@ -27,6 +27,7 @@ com/litethinking/product/infrastructure/config/JpaConfig.class
 com/litethinking/product/domain/exception/ProductNotFoundException.class
 com/litethinking/product/domain/port/out/ProductRepositoryPort.class
 com/litethinking/product/infrastructure/web/dto/CategoryRequestDTO.class
+com/litethinking/product/domain/exception/ProductPersistenceException.class
 com/litethinking/product/domain/exception/CategoryNotFoundException.class
 com/litethinking/product/infrastructure/persistence/entity/ProductPriceEntity.class
 com/litethinking/product/infrastructure/persistence/adapter/ProductRepositoryAdapter.class

@@ -1,5 +1,6 @@
 package com.litethinking.inventory.infrastructure.persistence.adapter;
 
+import com.litethinking.inventory.domain.exception.InventoryQueryException;
 import com.litethinking.inventory.domain.model.InventoryItem;
 import com.litethinking.inventory.domain.model.ProductPrice;
 import com.litethinking.inventory.domain.port.out.ProductQueryPort;
@@ -7,6 +8,9 @@ import com.litethinking.inventory.infrastructure.persistence.entity.CategoryProd
 import com.litethinking.inventory.infrastructure.persistence.entity.ProductEntity;
 import com.litethinking.inventory.infrastructure.persistence.entity.ProductPriceEntity;
 import com.litethinking.inventory.infrastructure.persistence.repository.ProductJpaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,8 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class ProductQueryAdapter implements ProductQueryPort {
 
+    private static final Logger log = LoggerFactory.getLogger(ProductQueryAdapter.class);
+
     private final ProductJpaRepository productJpaRepository;
 
     public ProductQueryAdapter(ProductJpaRepository productJpaRepository) {
@@ -27,26 +33,35 @@ public class ProductQueryAdapter implements ProductQueryPort {
 
     @Override
     public List<InventoryItem> fetchProducts() {
-        // Query 1: products with prices
-        List<ProductEntity> withPrices = productJpaRepository.findAllWithPrices();
+        try {
+            // Query 1: load all non-deleted products with their prices
+            List<ProductEntity> withPrices = productJpaRepository.findAllWithPrices();
 
-        // Query 2: products with categories
-        List<ProductEntity> withCategories = productJpaRepository.findAllWithCategories();
+            // Query 2: load all non-deleted products with their category associations
+            List<ProductEntity> withCategories = productJpaRepository.findAllWithCategories();
 
-        // Map categories by product id
-        Map<UUID, List<String>> categoriesByProduct = withCategories.stream()
-                .collect(Collectors.toMap(
-                        ProductEntity::getId,
-                        p -> p.getCategoryProducts().stream()
-                                .map(CategoryProductEntity::getCategory)
-                                .map(cat -> cat.getName())
-                                .collect(Collectors.toList()),
-                        (a, b) -> a
-                ));
+            // Build a category lookup keyed by product id to avoid N+1 joins
+            Map<UUID, List<String>> categoriesByProduct = withCategories.stream()
+                    .collect(Collectors.toMap(
+                            ProductEntity::getId,
+                            p -> p.getCategoryProducts().stream()
+                                    .map(CategoryProductEntity::getCategory)
+                                    .map(cat -> cat.getName())
+                                    .collect(Collectors.toList()),
+                            (a, b) -> a
+                    ));
 
-        return withPrices.stream()
-                .map(entity -> toInventoryItem(entity, categoriesByProduct.getOrDefault(entity.getId(), List.of())))
-                .collect(Collectors.toList());
+            return withPrices.stream()
+                    .map(entity -> toInventoryItem(
+                            entity,
+                            categoriesByProduct.getOrDefault(entity.getId(), List.of())))
+                    .collect(Collectors.toList());
+
+        } catch (DataAccessException e) {
+            log.error("Error al consultar los productos en la base de datos: {}", e.getMessage(), e);
+            throw new InventoryQueryException(
+                    "Error al consultar el inventario en la base de datos.", e);
+        }
     }
 
     private InventoryItem toInventoryItem(ProductEntity entity, List<String> categories) {

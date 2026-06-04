@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.litethinking.inventory.domain.model.InventoryItem;
 import com.litethinking.inventory.domain.model.ProductPrice;
 import com.litethinking.inventory.domain.port.in.InventoryUseCase;
-import com.litethinking.inventory.infrastructure.web.dto.SendEmailRequestDTO;
 import com.litethinking.inventory.infrastructure.config.SecurityConfig;
+import com.litethinking.inventory.infrastructure.web.dto.SendEmailRequestDTO;
 import com.litethinking.inventory.infrastructure.web.exception.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -61,8 +62,10 @@ class InventoryControllerTest {
 
     @Test
     void getInventory_withAdminRole_returns200() throws Exception {
+        // given
         when(inventoryUseCase.getInventory()).thenReturn(List.of(sampleItem));
 
+        // when / then
         mockMvc.perform(get("/api/inventory")
                         .header("X-User-Role", "ADMIN"))
                 .andExpect(status().isOk())
@@ -72,6 +75,9 @@ class InventoryControllerTest {
 
     @Test
     void getInventory_withExternalRole_returns403() throws Exception {
+        // given — no mock needed, controller rejects before reaching the use case
+
+        // when / then
         mockMvc.perform(get("/api/inventory")
                         .header("X-User-Role", "EXTERNAL"))
                 .andExpect(status().isForbidden())
@@ -80,6 +86,9 @@ class InventoryControllerTest {
 
     @Test
     void getInventory_withNoRole_returns403() throws Exception {
+        // given — empty role is treated the same as a non-ADMIN role
+
+        // when / then
         mockMvc.perform(get("/api/inventory")
                         .header("X-User-Role", ""))
                 .andExpect(status().isForbidden())
@@ -88,9 +97,11 @@ class InventoryControllerTest {
 
     @Test
     void generatePdf_withAdminRole_returns200AndPdfContentType() throws Exception {
+        // given
         byte[] pdfContent = new byte[]{37, 80, 68, 70};
-        when(inventoryUseCase.generatePdf()).thenReturn(pdfContent);
+        when(inventoryUseCase.generateInventoryPdf()).thenReturn(pdfContent);
 
+        // when / then
         mockMvc.perform(get("/api/inventory/pdf")
                         .header("X-User-Role", "ADMIN"))
                 .andExpect(status().isOk())
@@ -101,25 +112,27 @@ class InventoryControllerTest {
 
     @Test
     void sendEmail_withAdminAndValidEmail_returns200() throws Exception {
+        // given
         doNothing().when(inventoryUseCase).sendPdfByEmail(anyString());
-
         SendEmailRequestDTO request = new SendEmailRequestDTO();
         request.setEmail("user@example.com");
 
+        // when / then
         mockMvc.perform(post("/api/inventory/send-email")
                         .header("X-User-Role", "ADMIN")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString(
-                        "user@example.com")));
+                .andExpect(content().string(containsString("user@example.com")));
     }
 
     @Test
     void sendEmail_withInvalidEmail_returns400() throws Exception {
+        // given
         SendEmailRequestDTO request = new SendEmailRequestDTO();
         request.setEmail("not-a-valid-email");
 
+        // when / then
         mockMvc.perform(post("/api/inventory/send-email")
                         .header("X-User-Role", "ADMIN")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -130,14 +143,31 @@ class InventoryControllerTest {
 
     @Test
     void sendEmail_withBlankEmail_returns400() throws Exception {
+        // given
         SendEmailRequestDTO request = new SendEmailRequestDTO();
         request.setEmail("");
 
+        // when / then
         mockMvc.perform(post("/api/inventory/send-email")
                         .header("X-User-Role", "ADMIN")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400));
+    }
+
+    @Test
+    void sendEmail_withExternalRole_returns403() throws Exception {
+        // given
+        SendEmailRequestDTO request = new SendEmailRequestDTO();
+        request.setEmail("user@example.com");
+
+        // when / then
+        mockMvc.perform(post("/api/inventory/send-email")
+                        .header("X-User-Role", "EXTERNAL")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.status").value(403));
     }
 }

@@ -7,6 +7,7 @@
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/auth-service/src/main/java/com/litethinking/auth/domain/model/User.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/auth-service/src/main/java/com/litethinking/auth/domain/model/Role.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/auth-service/src/main/java/com/litethinking/auth/infrastructure/web/dto/LoginRequestDTO.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/auth-service/src/main/java/com/litethinking/auth/domain/exception/PersistenceException.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/auth-service/src/main/java/com/litethinking/auth/infrastructure/persistence/entity/UserEntity.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/auth-service/src/main/java/com/litethinking/auth/domain/port/out/RoleRepositoryPort.java
 /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/auth-service/src/main/java/com/litethinking/auth/domain/exception/UserNotFoundException.java

@@ -20,6 +20,7 @@ com/litethinking/auth/infrastructure/web/dto/LoginResponseDTO.class
 com/litethinking/auth/infrastructure/persistence/entity/RoleEntity.class
 com/litethinking/auth/domain/exception/UserNotFoundException.class
 com/litethinking/auth/domain/exception/InvalidCredentialsException.class
+com/litethinking/auth/domain/exception/PersistenceException.class
 com/litethinking/auth/infrastructure/persistence/repository/UserJpaRepository.class
 com/litethinking/auth/infrastructure/web/controller/AuthController.class
 com/litethinking/auth/infrastructure/mapper/UserMapper.class

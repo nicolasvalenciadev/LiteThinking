@@ -8,11 +8,12 @@ spring:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:litethinking_db}
     username: ${DB_USER:litethinking_user}
     password: ${DB_PASSWORD:litethinking_pass}
+    driver-class-name: org.postgresql.Driver
   jpa:
     ddl-auto: validate
     show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         jdbc:
           time_zone: UTC

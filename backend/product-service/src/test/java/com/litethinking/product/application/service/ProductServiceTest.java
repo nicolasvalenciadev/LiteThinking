@@ -1,5 +1,6 @@
 package com.litethinking.product.application.service;
 
+import com.litethinking.product.domain.exception.CategoryNotFoundException;
 import com.litethinking.product.domain.exception.ProductAlreadyExistsException;
 import com.litethinking.product.domain.exception.ProductNotFoundException;
 import com.litethinking.product.domain.model.Category;
@@ -8,7 +9,6 @@ import com.litethinking.product.domain.model.ProductPrice;
 import com.litethinking.product.domain.port.out.CategoryRepositoryPort;
 import com.litethinking.product.domain.port.out.ProductPriceRepositoryPort;
 import com.litethinking.product.domain.port.out.ProductRepositoryPort;
-import com.litethinking.product.infrastructure.mapper.CategoryMapper;
 import com.litethinking.product.infrastructure.mapper.ProductMapper;
 import com.litethinking.product.infrastructure.web.dto.ProductPriceDTO;
 import com.litethinking.product.infrastructure.web.dto.ProductRequestDTO;
@@ -69,54 +69,63 @@ class ProductServiceTest {
         productResponseDTO.setId(productId);
         productResponseDTO.setCode("P001");
         productResponseDTO.setName("Test Product");
+        productResponseDTO.setPrices(new ArrayList<>());
+        productResponseDTO.setCategories(new ArrayList<>());
 
         productRequestDTO = new ProductRequestDTO();
         productRequestDTO.setCode("P001");
         productRequestDTO.setName("Test Product");
         productRequestDTO.setDescription("Description");
         productRequestDTO.setCompanyId(companyId);
-
-        ProductPriceDTO priceDTO = new ProductPriceDTO("COP", BigDecimal.valueOf(1000));
-        productRequestDTO.setPrices(List.of(priceDTO));
+        productRequestDTO.setPrices(List.of(new ProductPriceDTO("COP", BigDecimal.valueOf(1000))));
         productRequestDTO.setCategoryIds(new ArrayList<>());
     }
 
     @Test
     void findAll_returnsListOfProducts() {
+        // given
         when(productRepositoryPort.findAll()).thenReturn(List.of(product));
         when(productPriceRepositoryPort.findByProductId(productId)).thenReturn(new ArrayList<>());
         when(categoryRepositoryPort.findByProductId(productId)).thenReturn(new ArrayList<>());
         when(productMapper.toResponseDTO(any(Product.class))).thenReturn(productResponseDTO);
 
+        // when
         List<ProductResponseDTO> result = productService.findAll();
 
+        // then
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getCode()).isEqualTo("P001");
     }
 
     @Test
     void findById_returnsProduct_whenExists() {
+        // given
         when(productRepositoryPort.findById(productId)).thenReturn(Optional.of(product));
         when(productPriceRepositoryPort.findByProductId(productId)).thenReturn(new ArrayList<>());
         when(categoryRepositoryPort.findByProductId(productId)).thenReturn(new ArrayList<>());
         when(productMapper.toResponseDTO(any(Product.class))).thenReturn(productResponseDTO);
 
+        // when
         ProductResponseDTO result = productService.findById(productId);
 
+        // then
         assertThat(result.getCode()).isEqualTo("P001");
     }
 
     @Test
     void findById_throwsProductNotFoundException_whenNotFound() {
+        // given
         UUID missingId = UUID.randomUUID();
         when(productRepositoryPort.findById(missingId)).thenReturn(Optional.empty());
 
+        // when / then
         assertThatThrownBy(() -> productService.findById(missingId))
                 .isInstanceOf(ProductNotFoundException.class);
     }
 
     @Test
     void create_savesProductWithPricesAndCategories() {
+        // given
         when(productRepositoryPort.findByCode("P001")).thenReturn(Optional.empty());
         when(productRepositoryPort.save(any(Product.class))).thenReturn(product);
         when(productPriceRepositoryPort.save(any(ProductPrice.class))).thenReturn(new ProductPrice());
@@ -124,8 +133,10 @@ class ProductServiceTest {
         when(categoryRepositoryPort.findByProductId(productId)).thenReturn(new ArrayList<>());
         when(productMapper.toResponseDTO(any(Product.class))).thenReturn(productResponseDTO);
 
+        // when
         ProductResponseDTO result = productService.create(productRequestDTO);
 
+        // then
         assertThat(result).isNotNull();
         verify(productRepositoryPort).save(any(Product.class));
         verify(productPriceRepositoryPort).save(any(ProductPrice.class));
@@ -133,20 +144,72 @@ class ProductServiceTest {
 
     @Test
     void create_throwsProductAlreadyExistsException_whenCodeExists() {
+        // given
         when(productRepositoryPort.findByCode("P001")).thenReturn(Optional.of(product));
 
+        // when / then
         assertThatThrownBy(() -> productService.create(productRequestDTO))
                 .isInstanceOf(ProductAlreadyExistsException.class);
+        verify(productRepositoryPort, never()).save(any());
+    }
 
+    @Test
+    void create_throwsCategoryNotFoundException_whenCategoryIdIsInvalid() {
+        // given
+        UUID invalidCategoryId = UUID.randomUUID();
+        productRequestDTO.setCategoryIds(List.of(invalidCategoryId));
+        when(productRepositoryPort.findByCode("P001")).thenReturn(Optional.empty());
+        when(productRepositoryPort.save(any(Product.class))).thenReturn(product);
+        when(productPriceRepositoryPort.save(any(ProductPrice.class))).thenReturn(new ProductPrice());
+        when(categoryRepositoryPort.findById(invalidCategoryId)).thenReturn(Optional.empty());
+
+        // when / then
+        assertThatThrownBy(() -> productService.create(productRequestDTO))
+                .isInstanceOf(CategoryNotFoundException.class);
+    }
+
+    @Test
+    void update_returnsUpdatedProduct_whenSuccessful() {
+        // given
+        when(productRepositoryPort.findById(productId)).thenReturn(Optional.of(product));
+        when(productRepositoryPort.findByCode("P001")).thenReturn(Optional.of(product));
+        when(productRepositoryPort.save(any(Product.class))).thenReturn(product);
+        when(productPriceRepositoryPort.save(any(ProductPrice.class))).thenReturn(new ProductPrice());
+        when(productPriceRepositoryPort.findByProductId(productId)).thenReturn(new ArrayList<>());
+        when(categoryRepositoryPort.findByProductId(productId)).thenReturn(new ArrayList<>());
+        when(productMapper.toResponseDTO(any(Product.class))).thenReturn(productResponseDTO);
+
+        // when
+        ProductResponseDTO result = productService.update(productId, productRequestDTO);
+
+        // then
+        assertThat(result).isNotNull();
+        verify(productRepositoryPort).save(any(Product.class));
+        verify(productPriceRepositoryPort).softDeleteByProductId(productId);
+        verify(categoryRepositoryPort).softDeleteCategoryProductByProductId(productId);
+    }
+
+    @Test
+    void update_throwsProductNotFoundException_whenProductDoesNotExist() {
+        // given
+        UUID missingId = UUID.randomUUID();
+        when(productRepositoryPort.findById(missingId)).thenReturn(Optional.empty());
+
+        // when / then
+        assertThatThrownBy(() -> productService.update(missingId, productRequestDTO))
+                .isInstanceOf(ProductNotFoundException.class);
         verify(productRepositoryPort, never()).save(any());
     }
 
     @Test
     void delete_performsSoftDeleteOnProductPricesAndCategoryProduct() {
+        // given
         when(productRepositoryPort.findById(productId)).thenReturn(Optional.of(product));
 
+        // when
         productService.delete(productId);
 
+        // then
         verify(productRepositoryPort).softDelete(productId);
         verify(productPriceRepositoryPort).softDeleteByProductId(productId);
         verify(categoryRepositoryPort).softDeleteCategoryProductByProductId(productId);

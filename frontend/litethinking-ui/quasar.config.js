@@ -20,12 +20,25 @@ export default defineConfig((ctx) => {
         browser: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node22'
       },
-      vueRouterMode: 'hash', // Hash mode is convenient for simple deployments and local routing
+      vueRouterMode: 'hash',
+      extendViteConf(viteConf) {
+        viteConf.build = viteConf.build || {}
+        viteConf.build.rollupOptions = {
+          output: {
+            manualChunks: (id) => {
+              if (!id.includes('node_modules')) return
+              if (id.includes('/vue/') || id.includes('/pinia/') || id.includes('/vue-router/')) return 'vendor'
+              if (id.includes('/quasar/')) return 'quasar'
+              if (id.includes('/axios/')) return 'axios'
+            }
+          }
+        }
+      }
     },
 
     devServer: {
       port: 9000,
-      open: false // Avoid opening browser automatically on server launch
+      open: false
     },
 
     framework: {

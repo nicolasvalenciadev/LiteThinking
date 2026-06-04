@@ -2,6 +2,7 @@ package com.litethinking.inventory.infrastructure.mail;
 
 import com.litethinking.inventory.domain.exception.EmailDeliveryException;
 import com.litethinking.inventory.domain.port.out.EmailPort;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ public class JavaMailAdapter implements EmailPort {
 
     private static final Logger log = LoggerFactory.getLogger(JavaMailAdapter.class);
     private static final String SUBJECT = "Reporte de Inventario - LiteThinking";
+    private static final String PDF_FILENAME = "inventory_report.pdf";
     private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -29,9 +31,9 @@ public class JavaMailAdapter implements EmailPort {
     }
 
     @Override
-    public void sendEmail(String to, byte[] pdfBytes) {
-        File pdfFile = Paths.get(System.getProperty("java.io.tmpdir"), "inventory_report.pdf")
-                .toFile();
+    public void sendInventoryEmail(String to, byte[] pdfBytes) {
+        // Resolve the PDF written to disk by JasperReportAdapter
+        File pdfFile = Paths.get(System.getProperty("java.io.tmpdir"), PDF_FILENAME).toFile();
 
         if (!pdfFile.exists()) {
             throw new EmailDeliveryException(
@@ -39,21 +41,25 @@ public class JavaMailAdapter implements EmailPort {
         }
 
         try {
+            // Step 1 — create the MIME message container
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
+            // Step 2 — set recipient, subject and HTML body (multipart = true for attachment)
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(to);
             helper.setSubject(SUBJECT);
             helper.setText(buildEmailBody(), true);
-            helper.addAttachment("inventory_report.pdf", pdfFile);
 
+            // Step 3 — attach the inventory PDF file
+            helper.addAttachment(PDF_FILENAME, pdfFile);
+
+            // Step 4 — hand off to the JavaMailSender (SMTP transport)
             mailSender.send(message);
             log.info("Reporte enviado correctamente a: {}", to);
 
-        } catch (Exception e) {
-            throw new EmailDeliveryException(
-                    "Error al enviar el reporte de inventario por correo electrónico: "
-                            + e.getMessage(), e);
+        } catch (MessagingException e) {
+            log.error("Error sending email to {}: {}", to, e.getMessage(), e);
+            throw new EmailDeliveryException("Error al enviar el correo electrónico.", e);
         }
     }
 

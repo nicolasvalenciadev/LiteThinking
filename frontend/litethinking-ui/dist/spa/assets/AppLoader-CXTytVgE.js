@@ -1,0 +1,1 @@
+import{W as e,Y as t,a as n,i as r,lt as i,rt as a}from"./quasar-C_Lvh0VI.js";var o={__name:`AppLoader`,props:{showing:{type:Boolean,default:!1},color:{type:String,default:`primary`},size:{type:String,default:`40px`}},setup(o){return(s,c)=>(a(),e(r,{showing:o.showing,color:o.color},{default:i(()=>[t(n,{size:o.size},null,8,[`size`])]),_:1},8,[`showing`,`color`]))}};export{o as t};

@@ -8,7 +8,9 @@ import com.litethinking.inventory.domain.port.out.EmailPort;
 import com.litethinking.inventory.domain.port.out.ProductQueryPort;
 import com.litethinking.inventory.domain.port.out.ReportPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -34,8 +36,9 @@ public class InventoryService implements InventoryUseCase {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<InventoryItem> getInventory() {
-        List<InventoryItem> items = new java.util.ArrayList<>(productQueryPort.fetchProducts());
+        List<InventoryItem> items = new ArrayList<>(productQueryPort.fetchProducts());
 
         Map<UUID, CompanyInfo> companyCache = new HashMap<>();
 
@@ -65,14 +68,16 @@ public class InventoryService implements InventoryUseCase {
     }
 
     @Override
-    public byte[] generatePdf() {
+    @Transactional(readOnly = true)
+    public byte[] generateInventoryPdf() {
         List<InventoryItem> items = getInventory();
-        return reportPort.generatePdf(items);
+        return reportPort.generateInventoryPdf(items);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void sendPdfByEmail(String email) {
-        byte[] pdfBytes = generatePdf();
-        emailPort.sendEmail(email, pdfBytes);
+        byte[] pdfBytes = generateInventoryPdf();
+        emailPort.sendInventoryEmail(email, pdfBytes);
     }
 }

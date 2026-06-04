@@ -1,20 +1,18 @@
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
+import { Notify } from 'quasar'
 import { useAuthStore } from '../stores/auth.store.js'
 
-// Create axios instance
 const api = axios.create({
   baseURL: 'http://localhost:8080'
 })
 
 export default boot(({ app, router }) => {
-  // Set global properties
   app.config.globalProperties.$axios = axios
   app.config.globalProperties.$api = api
 
   const authStore = useAuthStore()
 
-  // Request Interceptor: Attach bearer token
   api.interceptors.request.use(
     (config) => {
       if (authStore.token) {
@@ -22,27 +20,33 @@ export default boot(({ app, router }) => {
       }
       return config
     },
-    (error) => {
-      return Promise.reject(error)
-    }
-  );
+    (error) => Promise.reject(error)
+  )
 
-  // Response Interceptor: Handle 401 status
   api.interceptors.response.use(
-    (response) => {
-      return response
-    },
+    (response) => response,
     (error) => {
-      if (error.response && error.response.status === 401) {
+      if (!error.response) {
+        Notify.create({ type: 'negative', message: 'Sin conexión al servidor' })
+        return Promise.reject(error)
+      }
+
+      const { status } = error.response
+
+      if (status === 401) {
         authStore.clearAuth()
-        // If not already on login page, redirect
         if (router.currentRoute.value.path !== '/login') {
           router.push('/login')
         }
+      } else if (status === 403) {
+        Notify.create({ type: 'negative', message: 'Sin permisos para realizar esta acción' })
+      } else if (status >= 500) {
+        Notify.create({ type: 'negative', message: 'Error del servidor. Intente nuevamente' })
       }
+
       return Promise.reject(error)
     }
-  );
+  )
 })
 
 export { api }

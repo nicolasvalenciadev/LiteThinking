@@ -23,6 +23,7 @@ com/litethinking/inventory/InventoryServiceApplication.class
 com/litethinking/inventory/domain/port/out/ReportPort.class
 com/litethinking/inventory/domain/port/out/EmailPort.class
 com/litethinking/inventory/domain/port/out/ProductQueryPort.class
+com/litethinking/inventory/domain/exception/InventoryQueryException.class
 com/litethinking/inventory/infrastructure/report/JasperReportAdapter.class
 com/litethinking/inventory/infrastructure/web/dto/InventoryItemResponseDTO.class
 com/litethinking/inventory/infrastructure/persistence/repository/ProductPriceJpaRepository.class
