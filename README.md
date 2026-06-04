@@ -6,17 +6,27 @@
 ![Quasar](https://img.shields.io/badge/Quasar-2.x-blue)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
 ![Docker](https://img.shields.io/badge/Docker-Compose-blue)
+![GCP](https://img.shields.io/badge/GCP-Compute%20Engine-blue)
+![Lighthouse](https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-brightgreen)
 
 Sistema web para la gestión de empresas, productos e inventario, desarrollado como solución al reto técnico de LiteThinking Consulting. Implementa una arquitectura de microservicios con Spring Boot, frontend en Vue.js + Quasar Framework y base de datos PostgreSQL.
+
+## 🌐 Aplicación Desplegada
+
+> **https://litethinking.nvvdev.com**
+
+Desplegada en Google Cloud Platform — Compute Engine con Docker Compose.
 
 ---
 
 ## 📋 Tabla de Contenidos
 
 - [Credenciales de Acceso](#credenciales-de-acceso)
+- [Aplicación Desplegada](#-aplicación-desplegada)
 - [Arquitectura](#arquitectura)
 - [Stack Tecnológico](#stack-tecnológico)
 - [Modelo Entidad-Relación](#modelo-entidad-relación)
+- [Pruebas Lighthouse](#pruebas-lighthouse)
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Requisitos Previos](#requisitos-previos)
 - [Instalación y Configuración](#instalación-y-configuración)
@@ -115,6 +125,12 @@ El sistema está compuesto por 5 microservicios independientes más un frontend,
 
 ## 🗄️ Modelo Entidad-Relación
 
+### Diagrama
+
+![Modelo Entidad-Relación](docs/MER%20-%20litethinking.png)
+
+
+
 ```
 roles ──────────────── users ──────────── clients
   │                                          │
@@ -148,6 +164,34 @@ Todas las tablas incluyen:
 - `id` (UUID) como llave primaria
 - `created_date` y `last_update` para auditoría
 - `deleted` (BOOLEAN) para soft delete
+
+---
+
+## 🔦 Pruebas Lighthouse
+
+Auditoría de calidad del frontend realizada con Google Lighthouse sobre la aplicación desplegada en producción.
+
+### Desktop — 100/100/100/100
+
+![Lighthouse Desktop](docs/Lighthouse%20Desktop.png)
+
+| Métrica | Score |
+|---|---|
+| Performance | ✅ 100 |
+| Accessibility | ✅ 100 |
+| Best Practices | ✅ 100 |
+| SEO | ✅ 100 |
+
+### Mobile — 95/100/100/100
+
+![Lighthouse Mobile](docs/Lighthouse%20Mobile.png)
+
+| Métrica | Score |
+|---|---|
+| Performance | ✅ 95 |
+| Accessibility | ✅ 100 |
+| Best Practices | ✅ 100 |
+| SEO | ✅ 100 |
 
 ---
 
