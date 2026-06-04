@@ -4,7 +4,7 @@ import { Notify } from 'quasar'
 import { useAuthStore } from '../stores/auth.store.js'
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080'
+  baseURL: process.env.API_URL || 'http://localhost:8080'
 })
 
 export default boot(({ app, router }) => {

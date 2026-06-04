@@ -21,6 +21,9 @@ export default defineConfig((ctx) => {
         node: 'node22'
       },
       vueRouterMode: 'hash',
+      env: {
+        API_URL: process.env.API_URL || 'http://localhost:8080'
+      },
       extendViteConf(viteConf) {
         viteConf.build = viteConf.build || {}
         viteConf.build.rollupOptions = {
