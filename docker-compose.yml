@@ -119,6 +119,16 @@ services:
     depends_on:
       - api-gateway
 
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: litethinking-portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
   cloudflare-tunnel:
     image: cloudflare/cloudflared:latest
     container_name: litethinking-tunnel
@@ -127,7 +137,10 @@ services:
     depends_on:
       - frontend
       - api-gateway
+      - portainer
 
 volumes:
   postgres_data:
+    driver: local
+  portainer_data:
     driver: local
