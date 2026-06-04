@@ -1,0 +1,2 @@
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/test/java/com/litethinking/gateway/application/service/TokenValidationServiceTest.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/test/java/com/litethinking/gateway/infrastructure/filter/JwtAuthenticationFilterTest.java

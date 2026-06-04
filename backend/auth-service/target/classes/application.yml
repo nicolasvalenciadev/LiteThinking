@@ -1,0 +1,19 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    datasource:
+      url: jdbc:postgresql://localhost:5432/litethinking_db
+      username: litethinking_user
+      password: litethinking_pass
+  jpa:
+    ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-ms: 86400000

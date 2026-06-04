@@ -1,0 +1,97 @@
+// Quasar custom variables can be defined here or will be inherited.
+// We will customize some global styling classes for premium look and feel.
+
+body {
+  font-family: 'Roboto', -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
+  background-color: #f4f6f9;
+  color: #2c3e50;
+}
+
+/* Premium Card Enhancements */
+.lt-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  background: #ffffff;
+}
+
+.lt-gradient-bg {
+  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+}
+
+.lt-auth-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(25, 118, 210, 0.12);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+}
+
+/* Custom modern scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Table styling */
+.q-table__container {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.q-table th {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #5c6873;
+}
+
+.q-table tbody td {
+  font-size: 0.875rem;
+}
+
+/* Buttons micro-animations */
+.q-btn {
+  text-transform: none !important;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+.q-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.q-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Form inputs styling */
+.q-field--outlined .q-field__control {
+  border-radius: 8px;
+}
+
+/* Badge styling */
+.q-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}

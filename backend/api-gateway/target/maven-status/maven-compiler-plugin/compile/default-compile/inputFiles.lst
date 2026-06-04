@@ -1,0 +1,11 @@
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/main/java/com/litethinking/gateway/ApiGatewayApplication.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/main/java/com/litethinking/gateway/infrastructure/web/dto/ErrorResponseDTO.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/main/java/com/litethinking/gateway/infrastructure/config/WebClientConfig.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/main/java/com/litethinking/gateway/application/service/TokenValidationService.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/main/java/com/litethinking/gateway/domain/port/out/AuthServicePort.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/main/java/com/litethinking/gateway/infrastructure/filter/JwtAuthenticationFilter.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/main/java/com/litethinking/gateway/domain/port/in/TokenValidationUseCase.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/main/java/com/litethinking/gateway/infrastructure/config/GatewayConfig.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/main/java/com/litethinking/gateway/infrastructure/adapter/AuthServiceAdapter.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/main/java/com/litethinking/gateway/domain/model/AuthenticatedRequest.java
+/Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/api-gateway/src/main/java/com/litethinking/gateway/infrastructure/config/CorsConfig.java

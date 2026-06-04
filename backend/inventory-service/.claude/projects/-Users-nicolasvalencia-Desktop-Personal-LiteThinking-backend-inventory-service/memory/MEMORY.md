@@ -1,0 +1,1 @@
+- [inventory-service project context](project_inventory_service.md) — architecture, build tooling, key decisions (Java 17, Lombok, JasperReports, test config)

@@ -1,0 +1,19 @@
+package com.litethinking.auth.infrastructure.web.dto;
+
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+
+@Getter
+public class ErrorResponseDTO {
+
+    private final int status;
+    private final String message;
+    private final LocalDateTime timestamp;
+
+    public ErrorResponseDTO(int status, String message) {
+        this.status = status;
+        this.message = message;
+        this.timestamp = LocalDateTime.now();
+    }
+}

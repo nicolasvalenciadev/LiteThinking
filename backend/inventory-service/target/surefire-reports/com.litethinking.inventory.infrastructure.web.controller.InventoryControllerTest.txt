@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.litethinking.inventory.infrastructure.web.controller.InventoryControllerTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.783 s -- in com.litethinking.inventory.infrastructure.web.controller.InventoryControllerTest

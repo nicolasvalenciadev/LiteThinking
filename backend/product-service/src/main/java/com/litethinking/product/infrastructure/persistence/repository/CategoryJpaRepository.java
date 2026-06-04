@@ -1,0 +1,16 @@
+package com.litethinking.product.infrastructure.persistence.repository;
+
+import com.litethinking.product.infrastructure.persistence.entity.CategoryEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.UUID;
+
+public interface CategoryJpaRepository extends JpaRepository<CategoryEntity, UUID> {
+
+    @Modifying
+    @Query("UPDATE CategoryEntity c SET c.deleted = true WHERE c.id = :id")
+    void softDeleteById(@Param("id") UUID id);
+}

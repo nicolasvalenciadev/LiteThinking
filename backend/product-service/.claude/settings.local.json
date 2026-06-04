@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(java -version)",
+      "Bash(mvn -version)",
+      "Bash(/usr/libexec/java_home *)",
+      "Bash(JAVA_HOME=/Users/nicolasvalencia/Library/Java/JavaVirtualMachines/corretto-17.0.18/Contents/Home mvn compile -q)",
+      "Bash(JAVA_HOME=/Users/nicolasvalencia/Library/Java/JavaVirtualMachines/corretto-17.0.18/Contents/Home mvn wrapper:wrapper *)",
+      "Bash(JAVA_HOME=/Users/nicolasvalencia/Library/Java/JavaVirtualMachines/corretto-17.0.18/Contents/Home mvn test-compile *)",
+      "Bash(JAVA_HOME=/Users/nicolasvalencia/Library/Java/JavaVirtualMachines/corretto-17.0.18/Contents/Home mvn test)",
+      "Bash(mvn test *)"
+    ]
+  }
+}

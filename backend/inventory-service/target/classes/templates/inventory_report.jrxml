@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="inventory_report"
+              pageWidth="792"
+              pageHeight="612"
+              orientation="Landscape"
+              columnWidth="752"
+              leftMargin="20"
+              rightMargin="20"
+              topMargin="20"
+              bottomMargin="20"
+              whenNoDataType="AllSectionsNoDetail">
+
+    <parameter name="REPORT_DATE" class="java.lang.String"/>
+
+    <field name="productCode"        class="java.lang.String"/>
+    <field name="productName"        class="java.lang.String"/>
+    <field name="productDescription" class="java.lang.String"/>
+    <field name="companyName"        class="java.lang.String"/>
+    <field name="companyNit"         class="java.lang.String"/>
+    <field name="categoriesAsString" class="java.lang.String"/>
+    <field name="priceCOP"           class="java.lang.String"/>
+    <field name="priceUSD"           class="java.lang.String"/>
+    <field name="priceEUR"           class="java.lang.String"/>
+
+    <title>
+        <band height="60" splitType="Stretch">
+            <rectangle>
+                <reportElement x="0" y="0" width="752" height="60" backcolor="#1565C0" forecolor="#1565C0"/>
+                <graphicElement>
+                    <pen lineWidth="0.0"/>
+                </graphicElement>
+            </rectangle>
+            <textField>
+                <reportElement x="0" y="5" width="752" height="30" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Reporte de Inventario - LiteThinking"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="35" width="752" height="20" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Generado el: " + $P{REPORT_DATE}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="25" splitType="Stretch">
+            <rectangle>
+                <reportElement x="0" y="0" width="752" height="25" backcolor="#1565C0" forecolor="#1565C0"/>
+                <graphicElement>
+                    <pen lineWidth="0.0"/>
+                </graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="0" y="0" width="110" height="25" forecolor="#FFFFFF"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#FFFFFF"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font isBold="true" size="9"/>
+                </textElement>
+                <text><![CDATA[Empresa]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="110" y="0" width="80" height="25" forecolor="#FFFFFF"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#FFFFFF"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font isBold="true" size="9"/>
+                </textElement>
+                <text><![CDATA[NIT]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="190" y="0" width="70" height="25" forecolor="#FFFFFF"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#FFFFFF"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font isBold="true" size="9"/>
+                </textElement>
+                <text><![CDATA[Código]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="260" y="0" width="110" height="25" forecolor="#FFFFFF"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#FFFFFF"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font isBold="true" size="9"/>
+                </textElement>
+                <text><![CDATA[Nombre del Producto]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="370" y="0" width="120" height="25" forecolor="#FFFFFF"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#FFFFFF"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font isBold="true" size="9"/>
+                </textElement>
+                <text><![CDATA[Descripción]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="490" y="0" width="82" height="25" forecolor="#FFFFFF"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#FFFFFF"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font isBold="true" size="9"/>
+                </textElement>
+                <text><![CDATA[Categorías]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="572" y="0" width="62" height="25" forecolor="#FFFFFF"/>
+                <box leftPadding="4" rightPadding="4">
+                    <pen lineWidth="0.5" lineColor="#FFFFFF"/>
+                </box>
+                <textElement verticalAlignment="Middle" textAlignment="Right">
+                    <font isBold="true" size="9"/>
+                </textElement>
+                <text><![CDATA[Precio COP]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="634" y="0" width="60" height="25" forecolor="#FFFFFF"/>
+                <box leftPadding="4" rightPadding="4">
+                    <pen lineWidth="0.5" lineColor="#FFFFFF"/>
+                </box>
+                <textElement verticalAlignment="Middle" textAlignment="Right">
+                    <font isBold="true" size="9"/>
+                </textElement>
+                <text><![CDATA[Precio USD]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="694" y="0" width="58" height="25" forecolor="#FFFFFF"/>
+                <box leftPadding="4" rightPadding="4">
+                    <pen lineWidth="0.5" lineColor="#FFFFFF"/>
+                </box>
+                <textElement verticalAlignment="Middle" textAlignment="Right">
+                    <font isBold="true" size="9"/>
+                </textElement>
+                <text><![CDATA[Precio EUR]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="22" splitType="Stretch">
+            <rectangle>
+                <reportElement x="0" y="0" width="752" height="22" backcolor="#E3F2FD">
+                    <printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></printWhenExpression>
+                </reportElement>
+                <graphicElement>
+                    <pen lineWidth="0.0"/>
+                </graphicElement>
+            </rectangle>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="0" y="0" width="110" height="22" stretchType="RelativeToBandHeight"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#BDBDBD"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{companyName} != null ? $F{companyName} : ""]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="110" y="0" width="80" height="22" stretchType="RelativeToBandHeight"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#BDBDBD"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{companyNit} != null ? $F{companyNit} : ""]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="190" y="0" width="70" height="22" stretchType="RelativeToBandHeight"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#BDBDBD"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{productCode} != null ? $F{productCode} : ""]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="260" y="0" width="110" height="22" stretchType="RelativeToBandHeight"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#BDBDBD"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{productName} != null ? $F{productName} : ""]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="370" y="0" width="120" height="22" stretchType="RelativeToBandHeight"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#BDBDBD"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{productDescription} != null ? $F{productDescription} : ""]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="490" y="0" width="82" height="22" stretchType="RelativeToBandHeight"/>
+                <box leftPadding="4">
+                    <pen lineWidth="0.5" lineColor="#BDBDBD"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{categoriesAsString} != null ? $F{categoriesAsString} : ""]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="572" y="0" width="62" height="22" stretchType="RelativeToBandHeight"/>
+                <box leftPadding="4" rightPadding="4">
+                    <pen lineWidth="0.5" lineColor="#BDBDBD"/>
+                </box>
+                <textElement verticalAlignment="Middle" textAlignment="Right">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{priceCOP} != null ? $F{priceCOP} : ""]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="634" y="0" width="60" height="22" stretchType="RelativeToBandHeight"/>
+                <box leftPadding="4" rightPadding="4">
+                    <pen lineWidth="0.5" lineColor="#BDBDBD"/>
+                </box>
+                <textElement verticalAlignment="Middle" textAlignment="Right">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{priceUSD} != null ? $F{priceUSD} : ""]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="694" y="0" width="58" height="22" stretchType="RelativeToBandHeight"/>
+                <box leftPadding="4" rightPadding="4">
+                    <pen lineWidth="0.5" lineColor="#BDBDBD"/>
+                </box>
+                <textElement verticalAlignment="Middle" textAlignment="Right">
+                    <font size="8"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{priceEUR} != null ? $F{priceEUR} : ""]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <pageFooter>
+        <band height="25" splitType="Stretch">
+            <line>
+                <reportElement x="0" y="0" width="752" height="1" forecolor="#1565C0"/>
+            </line>
+            <textField>
+                <reportElement x="0" y="5" width="752" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de " + $V{PAGE_COUNT}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+
+</jasperReport>

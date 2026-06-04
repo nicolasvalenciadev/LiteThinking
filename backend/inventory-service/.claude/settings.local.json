@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/domain/model)",
+      "Bash(mkdir -p /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/domain/exception)",
+      "Bash(mkdir -p /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/domain/port/in)",
+      "Bash(mkdir -p /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/domain/port/out)",
+      "Bash(mkdir -p /Users/nicolasvalencia/Desktop/Personal/LiteThinking/backend/inventory-service/src/main/java/com/litethinking/inventory/application/service)",
+      "Bash(mvn compile *)",
+      "Bash(java -version)",
+      "Bash(mvn -version)",
+      "Bash(JAVA_HOME=/Users/nicolasvalencia/Library/Java/JavaVirtualMachines/corretto-17.0.18/Contents/Home mvn compile -q)",
+      "Bash(JAVA_HOME=/Users/nicolasvalencia/Library/Java/JavaVirtualMachines/corretto-17.0.18/Contents/Home mvn test)"
+    ]
+  }
+}
