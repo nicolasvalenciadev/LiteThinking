@@ -1,5 +1,21 @@
-// Quasar custom variables can be defined here or will be inherited.
-// We will customize some global styling classes for premium look and feel.
+// Override font-display for all Roboto weights used by Quasar extras,
+// preventing render-blocking while the bundled font loads.
+@each $weight in (300, 400, 500, 700) {
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: $weight;
+    font-display: swap;
+    src: local('Roboto');
+  }
+  @font-face {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: $weight;
+    font-display: swap;
+    src: local('Roboto');
+  }
+}
 
 body {
   font-family: 'Roboto', -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;

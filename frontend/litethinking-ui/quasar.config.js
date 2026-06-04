@@ -45,6 +45,7 @@ export default defineConfig((ctx) => {
     },
 
     framework: {
+      importStrategy: 'auto',
       config: {
         notify: {
           position: 'top-right',
